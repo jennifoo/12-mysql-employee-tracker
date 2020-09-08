@@ -6,7 +6,7 @@ var cTable = require("console.table");
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
-  user: root,
+  user: "root",
   password: "password",
   database: "employee_db"
 });
@@ -15,6 +15,28 @@ connection.connect(function(err) {
   if (err) throw err;
   console.log("0.connected as id " + connection.threadId);
   start();
+});
+
+
+function start() {
+  inquirer
+  .prompt({
+    name: "choice",
+    type: "list",
+    message: "Please select an option listed below:",
+    choices: [
+      "View employees",
+      "View departments",
+      "View roles",
+      "Add departments",
+      "Add roles",
+      "Add employees",
+      "Update employee roles"
+    ]
+  })
+  .then(function(answer) {
+    console.log("success");
+  });
 }
 
 //view employees / departments / roles
@@ -23,7 +45,7 @@ function view() {
     if (err) throw err;
     console.log("1.connected as id " + connection.threadId);
     add();
-  }
+  });
 }
 
 // add departments / roles / employees
@@ -32,7 +54,7 @@ function add(){
     if (err) throw err;
     console.log("2.connected as id " + connection.threadId);
     add();
-  }
+  });
 }
 
 // update employee roles
@@ -41,5 +63,5 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log("3.connected as id " + connection.threadId);
     add();
-  }
+  });
 }

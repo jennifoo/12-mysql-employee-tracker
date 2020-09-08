@@ -4,8 +4,8 @@
   "description": "manage company employees using node, inquirer and MySQL",
   "main": "server.js",
   "dependencies": {
-    "inquirer": "^7.3.3",
-    "mysql": "^2.18.1",
+    "inquirer": "^6.2.1",
+    "mysql": "^2.16.0",
     "console.table": "^0.10.0"
   }
 }
