@@ -18,7 +18,7 @@ connection.connect(function(err) {
 });
 
 
-function start() {
+ let start = () => {
   inquirer
   .prompt({
     name: "choice",
@@ -35,7 +35,8 @@ function start() {
     ]
   })
   .then(function(answer) {
-    console.log("success");
+    console.log("sucess")
+
   });
 }
 
