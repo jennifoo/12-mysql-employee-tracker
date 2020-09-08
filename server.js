@@ -34,8 +34,9 @@ connection.connect(function(err) {
       "Update employee roles"
     ]
   })
-  .then(function(answer) {
-    if (answer === "View employees") {
+  .then(function({choice}) {
+    if (choice === "View employees") {
+      // console.log(choice); output: View employees
       viewEmployee();
     }
     if (answer === "View departments") {
@@ -60,25 +61,34 @@ connection.connect(function(err) {
 }
 
 let viewEmployee = () => {
-  connection.connect(function(err) {
-    if (err) throw err;
-    console.log("1.connected as id " + connection.threadId);
-    add();
-  });
-}
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, role.title, role.salary FROM employee INNER JOIN role ON employee.role_id = role.id",
+    function(err, res) {
+      if (err) throw err;
+      console.log(res);
+      start();
+    }
+  )
+};
 
-function viewDepart(){
-  connection.connect(function(err) {
-    if (err) throw err;
-    console.log("2.connected as id " + connection.threadId);
-    add();
-  });
-}
+let viewDepart = () => {
+  connection.query(
+    "QUERY", {},
+    function(err, res) {
+      if (err) throw err;
+      console.log("testing2")
+      start();
+    }
+  )
+};
 
-function viewRoles() {
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("3.connected as id " + connection.threadId);
-    add();
-  });
-}
+ let viewRoles = () => {
+   connection.query(
+     "QUERY", {},
+     function(err, res) {
+       if (err) throw err;
+       console.log("testing3")
+       start();
+     }
+   )
+ };
