@@ -35,13 +35,31 @@ connection.connect(function(err) {
     ]
   })
   .then(function(answer) {
-    console.log("sucess")
-
+    if (answer === "View employees") {
+      viewEmployee();
+    }
+    if (answer === "View departments") {
+      viewDepart();
+    }
+    if (answer === "View roles") {
+      viewRoles();
+    }
+    if (answer === "Add departments") {
+      addDepart();
+    }
+    if (answer === "Add roles") {
+      addRoles();
+    }
+    if (answer === "Add employees") {
+      addEmployee();
+    }
+    if (answer === "Update employee role") {
+      updateEmployeeRole();
+    }
   });
 }
 
-//view employees / departments / roles
-function view() {
+let viewEmployee = () => {
   connection.connect(function(err) {
     if (err) throw err;
     console.log("1.connected as id " + connection.threadId);
@@ -49,8 +67,7 @@ function view() {
   });
 }
 
-// add departments / roles / employees
-function add(){
+function viewDepart(){
   connection.connect(function(err) {
     if (err) throw err;
     console.log("2.connected as id " + connection.threadId);
@@ -58,8 +75,7 @@ function add(){
   });
 }
 
-// update employee roles
-function update() {
+function viewRoles() {
 connection.connect(function(err) {
     if (err) throw err;
     console.log("3.connected as id " + connection.threadId);
