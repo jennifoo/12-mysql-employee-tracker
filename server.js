@@ -39,12 +39,12 @@ connection.connect(function(err) {
       // console.log(choice); output: View employees
       viewEmployee();
     }
-    // if (answer === "View departments") {
-    //   viewDepart();
-    // }
-    // if (answer === "View roles") {
-    //   viewRoles();
-    // }
+    if (choice === "View departments") {
+      viewCol('name', 'department');
+    }
+    if (choice === "View roles") {
+      viewAll('role');
+    }
     // if (answer === "Add departments") {
     //   addDepart();
     // }
@@ -89,24 +89,33 @@ let viewEmployee = () => {
   )
 };
 
-// let viewDepart = () => {
-//   connection.query(
-//     "QUERY", {},
-//     function(err, res) {
-//       if (err) throw err;
-//       console.log("testing2")
-//       start();
-//     }
-//   )
-// };
-//
-//  let viewRoles = () => {
-//    connection.query(
-//      "QUERY", {},
-//      function(err, res) {
-//        if (err) throw err;
-//        console.log("testing3")
-//        start();
-//      }
-//    )
-//  };
+// VIEW DATA - PASS COL + TABLE
+let viewCol = (column, tableName) => {
+  connection.query("SELECT ?? FROM ??", [column, tableName], function(err, res) {
+      if (err) throw err;
+      console.table(res)
+      start();
+    }
+  )
+};
+
+// VIEW ALL DATA - PASS TABLE
+let viewAll = (tableName) => {
+  connection.query("SELECT * FROM ??", [tableName], function(err, res) {
+      if (err) throw err;
+      console.table(res)
+      start();
+    }
+  )
+};
+
+ // let viewRoles = () => {
+ //   connection.query(
+ //     "QUERY", {},
+ //     function(err, res) {
+ //       if (err) throw err;
+ //       console.log("testing3")
+ //       start();
+ //     }
+ //   )
+ // };
