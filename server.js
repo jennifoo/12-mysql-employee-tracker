@@ -17,7 +17,6 @@ connection.connect(function(err) {
   start();
 });
 
-
  let start = () => {
   inquirer
   .prompt({
@@ -45,9 +44,20 @@ connection.connect(function(err) {
     if (choice === "View roles") {
       viewAll('role');
     }
-    // if (answer === "Add departments") {
-    //   addDepart();
-    // }
+    if (choice === "Add departments") {
+      let add = () => {
+        inquirer
+        .prompt({
+          name: "departAdd",
+          type: "input",
+          message: "What department would you like to add?"
+        })
+        .then(function({departAdd}){
+          insertVal('department', 'name', departAdd);
+        })
+      }
+      add();
+    }
     // if (answer === "Add roles") {
     //   addRoles();
     // }
@@ -94,7 +104,7 @@ let viewCol = (column, tableName) => {
   connection.query("SELECT ?? FROM ??", [column, tableName], function(err, res) {
       if (err) throw err;
       console.table(res)
-      start();
+      // start();
     }
   )
 };
@@ -104,18 +114,16 @@ let viewAll = (tableName) => {
   connection.query("SELECT * FROM ??", [tableName], function(err, res) {
       if (err) throw err;
       console.table(res)
-      start();
+      // start();
     }
   )
 };
 
- // let viewRoles = () => {
- //   connection.query(
- //     "QUERY", {},
- //     function(err, res) {
- //       if (err) throw err;
- //       console.log("testing3")
- //       start();
- //     }
- //   )
- // };
+ let insertVal = (tableName, column, value) => {
+   connection.query("INSERT INTO ??(??) VALUES (?)", [tableName, column, value], function(err, res) {
+       if (err) throw err;
+       console.log("res")
+       // start();
+     }
+   )
+ };
