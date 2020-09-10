@@ -8,27 +8,27 @@ Developers are often tasked with creating interfaces that make it easy for non-d
 
 * [Vimeo Link](https://vimeo.com/456706895)
 
-<img src="./assets/employee-tracker" alt="employee tracker node application">
+<img src="./assets/employee-tracker.png" alt="employee tracker node application">
 
 ## Instructions
 
 Design the following database schema containing three tables:
 * #### department:
-* id
-* name
+  * id
+  * name
 
 * #### role:
-* id
-* title
-* salary
-* department_id
+  * id
+  * title
+  * salary
+  * department_id
 
 * #### employee:
-* id
-* first_name
-* last_name
-* role_id
-* manager_id
+  * id
+  * first_name
+  * last_name
+  * role_id
+  * manager_id
 
 ## Functionality
 
