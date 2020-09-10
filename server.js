@@ -1,7 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var cTable = require("console.table");
-// https://www.npmjs.com/package/console.table
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -95,7 +94,6 @@ let start = () => {
                           viewAll('role');
 
                           start();
-
                   })
                 }
                 getDepartId(data.roleDepart);
@@ -189,9 +187,7 @@ let start = () => {
     updateRoles();
   })} //Connection Query and If For AddRoles
   }) //End Then
-}//) //End Then
-
-// }
+} //End Then
 
 // UPDATE EMPLOYEE ROLE tableName, setColOne, value, primaryId
  let updateEmployeeRole = (tableName, colChange, colVal, colID, colIDV) => {
@@ -202,6 +198,7 @@ let start = () => {
    )
  };
 
+// VIEW ALL EMPLOYEES AND THEIR INFORMATION
 let viewEmployee = () => {
   connection.query(
     "SELECT employee.id, first_name, last_name, title, department.name, role.salary FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id",
@@ -267,14 +264,3 @@ let viewAll = (tableName) => {
       }
     )
   };
-
-
-//   // UPDATE EMPLOYEE ROLE tableName, setColOne, value, primaryId
-//    let updateEmployeeRole = () => {
-//      connection.query("UPDATE ?? SET ??=? WHERE ??=?", ['employee', 'role_id', '5', 'id', '1'], function(err, res) {
-//          if (err) throw err;
-//          viewEmployee();
-//        }
-//      )
-//    };
-// updateEmployeeRole();
