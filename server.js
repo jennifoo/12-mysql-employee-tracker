@@ -19,7 +19,7 @@ connection.connect(function(err) {
 
 
 let start = () => {
-  inquirer
+  return inquirer
   .prompt({
     name: "choice",
     type: "list",
@@ -47,7 +47,7 @@ let start = () => {
     }
     if (choice === "Add departments") {
       let addDepart = () => {
-        inquirer
+         inquirer
         .prompt({
           name: "departAdd",
           type: "input",
@@ -55,7 +55,7 @@ let start = () => {
         })
         .then(function({departAdd}){
           insertVal('department', 'name', departAdd);
-          console.log(`${departAdd} has been added:`)
+          console.log(`The department, ${departAdd} has been added:`)
           viewCol('name', 'department');
         })
       }
@@ -64,7 +64,7 @@ let start = () => {
     if (choice === "Add roles") {
     connection.query("SELECT name FROM department", function(err, res) {
             let addRoles = () => {
-              inquirer
+              return inquirer
               .prompt([
                 {
                   name: "roleAdd",
@@ -94,6 +94,9 @@ let start = () => {
 
                           console.log(`${data.roleAdd} has been added:`)
                           viewAll('role');
+
+                          start();
+
                   })
                 }
                 getDepartId(data.roleDepart);
@@ -104,7 +107,7 @@ let start = () => {
     if (choice === "Add employees") {
     connection.query("SELECT title FROM role", function(err, res) {
             let addRoles = () => {
-              inquirer
+              return inquirer
               .prompt([
                 {
                   name: "firstAdd",
@@ -140,10 +143,7 @@ let start = () => {
               })
             }
             addRoles();
-
-
     })} //Connection Query and If For AddRoles
-
   }) //End Then
 }
 
@@ -168,9 +168,9 @@ let viewEmployee = () => {
         delete rObj["salary"];
         return rObj
       })
+      console.log("\n");
       console.table(adjRes);
-
-      //start();
+      start();
     }
   )
 };
@@ -179,8 +179,9 @@ let viewEmployee = () => {
 let viewCol = (column, tableName) => {
   connection.query("SELECT ?? FROM ??", [column, tableName], function(err, res) {
       if (err) throw err;
+      console.log("\n");
       console.table(res)
-      // start();
+      start();
     }
   )
 };
@@ -189,8 +190,9 @@ let viewCol = (column, tableName) => {
 let viewAll = (tableName) => {
   connection.query("SELECT * FROM ??", [tableName], function(err, res) {
       if (err) throw err;
+      console.log("\n");
       console.table(res)
-      // start();
+      start();
     }
   )
 };
@@ -199,16 +201,14 @@ let viewAll = (tableName) => {
  let insertVal = (tableName, column, value) => {
    connection.query("INSERT INTO ??(??) VALUES (?)", [tableName, column, value], function(err, res) {
        if (err) throw err;
-       // start();
      }
    )
  };
 
- // ADD ROLES
+ // ADD ROLES, ADD EMPLOYEES
   let insertRole = (tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart) => {
     connection.query("INSERT INTO ??(??, ??, ??) VALUES (?, ?, ?)", [tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart], function(err, res) {
         if (err) throw err;
-        // start();
       }
     )
   };
