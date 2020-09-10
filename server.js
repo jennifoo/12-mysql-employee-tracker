@@ -98,12 +98,52 @@ let start = () => {
                 }
                 getDepartId(data.roleDepart);
               })
-              //tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart
+            }
+            addRoles();
+    })} //Connection Query and If For AddRoles
+    if (choice === "Add employees") {
+    connection.query("SELECT title FROM role", function(err, res) {
+            let addRoles = () => {
+              inquirer
+              .prompt([
+                {
+                  name: "firstAdd",
+                  type: "input",
+                  message: "What is the first name of the employee?"
+                },
+                {
+                  name: "lastAdd",
+                  type: "input",
+                  message: "What is the last name of the employee?"
+                },
+                {
+                  name: "employeeRole",
+                  type: "list",
+                  message: "What role would you like to assign to this new employee?",
+                  choices: res.map(row => row.title)
+                }
+              ])
+              .then(function(data){
+
+                let getRoleId = (inputRoleTitle) => {
+                  connection.query(
+                    "SELECT id FROM role WHERE (title = ?)", [inputRoleTitle],
+                    function(err, res) {
+                          //res generates an array
+                          insertRole('employee', 'first_name', 'last_name', 'role_id', data.firstAdd, data.lastAdd, res[0].id);
+
+                          console.log(`${data.firstAdd} has been added:`)
+                          viewEmployee();
+                  })
+                }
+                getRoleId(data.employeeRole);
+              })
             }
             addRoles();
 
-    }) // Connection Query
-    } //End If
+
+    })} //Connection Query and If For AddRoles
+
   }) //End Then
 }
 
