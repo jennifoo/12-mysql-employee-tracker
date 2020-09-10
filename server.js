@@ -212,13 +212,3 @@ let viewAll = (tableName) => {
       }
     )
   };
-
-
-  // let getDepartId = (inputDepartName) => {
-  //   connection.query(
-  //     "SELECT department.id FROM department WHERE department.name = Normal",
-  //     function(err, res) {
-  //       // console.log(inputDepartName);
-  //       console.log(res);
-  //   })
-  // }
