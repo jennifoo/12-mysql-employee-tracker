@@ -47,7 +47,7 @@ let start = () => {
     }
     if (choice === "Add departments") {
       let addDepart = () => {
-         inquirer
+         return inquirer
         .prompt({
           name: "departAdd",
           type: "input",
