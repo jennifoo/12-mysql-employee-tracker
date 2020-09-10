@@ -17,7 +17,8 @@ connection.connect(function(err) {
   start();
 });
 
- let start = () => {
+
+let start = () => {
   inquirer
   .prompt({
     name: "choice",
@@ -45,7 +46,7 @@ connection.connect(function(err) {
       viewAll('role');
     }
     if (choice === "Add departments") {
-      let add = () => {
+      let addDepart = () => {
         inquirer
         .prompt({
           name: "departAdd",
@@ -54,20 +55,56 @@ connection.connect(function(err) {
         })
         .then(function({departAdd}){
           insertVal('department', 'name', departAdd);
+          console.log(`${departAdd} has been added:`)
+          viewCol('name', 'department');
         })
       }
-      add();
+      addDepart();
     }
-    // if (answer === "Add roles") {
-    //   addRoles();
-    // }
-    // if (answer === "Add employees") {
-    //   addEmployee();
-    // }
-    // if (answer === "Update employee role") {
-    //   updateEmployeeRole();
-    // }
-  });
+    if (choice === "Add roles") {
+    connection.query("SELECT name FROM department", function(err, res) {
+            let addRoles = () => {
+              inquirer
+              .prompt([
+                {
+                  name: "roleAdd",
+                  type: "input",
+                  message: "What role would you like to add?"
+                },
+                {
+                  name: "roleSalary",
+                  type: "input",
+                  message: "What is the salary of this new role?"
+                },
+                {
+                  name: "roleDepart",
+                  type: "list",
+                  message: "What department would you like to assign to this new role?",
+                  choices: res.map(row => row.name)
+                }
+              ])
+              .then(function(data){
+
+                let getDepartId = (inputDepartName) => {
+                  connection.query(
+                    "SELECT id FROM department WHERE (name = ?)", [inputDepartName],
+                    function(err, res) {
+                          //res generates an array
+                          insertRole('role', 'title', 'salary', 'department_id', data.roleAdd, data.roleSalary, res[0].id);
+
+                          console.log(`${data.roleAdd} has been added:`)
+                          viewAll('role');
+                  })
+                }
+                getDepartId(data.roleDepart);
+              })
+              //tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart
+            }
+            addRoles();
+
+    }) // Connection Query
+    } //End If
+  }) //End Then
 }
 
 let viewEmployee = () => {
@@ -75,7 +112,6 @@ let viewEmployee = () => {
     "SELECT employee.id, first_name, last_name, title, department.name, role.salary FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id",
     function(err, res) {
       if (err) throw err;
-
       let adjRes = res.map(obj => {
         let rObj = { ...obj }
         rObj["ID"] = obj["id"];
@@ -119,11 +155,30 @@ let viewAll = (tableName) => {
   )
 };
 
+// ADD DEPARTMENTS
  let insertVal = (tableName, column, value) => {
    connection.query("INSERT INTO ??(??) VALUES (?)", [tableName, column, value], function(err, res) {
        if (err) throw err;
-       console.log("res")
        // start();
      }
    )
  };
+
+ // ADD ROLES
+  let insertRole = (tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart) => {
+    connection.query("INSERT INTO ??(??, ??, ??) VALUES (?, ?, ?)", [tableName, colTitle, colSal, colDepart, valTitle, valSal, valDepart], function(err, res) {
+        if (err) throw err;
+        // start();
+      }
+    )
+  };
+
+
+  // let getDepartId = (inputDepartName) => {
+  //   connection.query(
+  //     "SELECT department.id FROM department WHERE department.name = Normal",
+  //     function(err, res) {
+  //       // console.log(inputDepartName);
+  //       console.log(res);
+  //   })
+  // }
