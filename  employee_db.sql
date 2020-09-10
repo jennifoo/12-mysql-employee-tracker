@@ -7,7 +7,6 @@ CREATE TABLE department(
     , name VARCHAR(30)
 );
 
-DROP TABLE IF EXISTS role;
 CREATE TABLE role(
 	id INT PRIMARY KEY NOT NULL AUTO_INCREMENT
     , title VARCHAR(30)
@@ -23,4 +22,4 @@ CREATE TABLE employee(
     , manager_id INT NULL
 );
 
-SELECT * FROM department;
+SELECT * FROM role;

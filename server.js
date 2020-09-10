@@ -17,9 +17,8 @@ connection.connect(function(err) {
   start();
 });
 
-
 let start = () => {
-  return inquirer
+   inquirer
   .prompt({
     name: "choice",
     type: "list",
@@ -47,7 +46,7 @@ let start = () => {
     }
     if (choice === "Add departments") {
       let addDepart = () => {
-         return inquirer
+         inquirer
         .prompt({
           name: "departAdd",
           type: "input",
@@ -64,7 +63,7 @@ let start = () => {
     if (choice === "Add roles") {
     connection.query("SELECT name FROM department", function(err, res) {
             let addRoles = () => {
-              return inquirer
+               inquirer
               .prompt([
                 {
                   name: "roleAdd",
@@ -107,7 +106,7 @@ let start = () => {
     if (choice === "Add employees") {
     connection.query("SELECT title FROM role", function(err, res) {
             let addRoles = () => {
-              return inquirer
+               inquirer
               .prompt([
                 {
                   name: "firstAdd",
@@ -144,8 +143,64 @@ let start = () => {
             }
             addRoles();
     })} //Connection Query and If For AddRoles
+
+
+  if (choice === "Update employee roles") {
+  connection.query("SELECT first_name FROM employee", function(err, res) {
+    let updateRoles = () => {
+       inquirer
+      .prompt([
+        {
+          name: "employeeSelect",
+          type: "list",
+          message: "Which employee needs their role updated?",
+          choices: res.map(row => row.first_name)
+        }
+      ]).then(function(eSelect){
+
+        connection.query("SELECT title FROM role", function(err, response) {
+
+               inquirer
+              .prompt([
+                {
+                  name: "roleSelect",
+                  type: "list",
+                  message: "Which role should they have?",
+                  choices: response.map(row => row.title)
+                }
+              ]).then(function(rSelect){
+                  // console.log(eSelect);
+                  // console.log(rSelect);
+                    let getRoleId = (inputRoleTitle) => {
+                      connection.query(
+                        "SELECT id FROM role WHERE (title = ?)", [inputRoleTitle],
+                        function(err, reply) {
+                              //res generates an array
+                              updateEmployeeRole('employee', 'role_id', reply[0].id, 'first_name', eSelect.employeeSelect);
+                              console.log(`The role for ${eSelect.employeeSelect} has been updated:`)
+
+                      })
+                    }
+                    getRoleId(rSelect.roleSelect);
+              })//Then
+        })//Connection
+      }) //Then
+    }
+    updateRoles();
+  })} //Connection Query and If For AddRoles
   }) //End Then
-}
+}//) //End Then
+
+// }
+
+// UPDATE EMPLOYEE ROLE tableName, setColOne, value, primaryId
+ let updateEmployeeRole = (tableName, colChange, colVal, colID, colIDV) => {
+   connection.query("UPDATE ?? SET ??=? WHERE ??=?", [tableName, colChange, colVal, colID, colIDV], function(err, res) {
+       if (err) throw err;
+       viewEmployee();
+     }
+   )
+ };
 
 let viewEmployee = () => {
   connection.query(
@@ -212,3 +267,14 @@ let viewAll = (tableName) => {
       }
     )
   };
+
+
+//   // UPDATE EMPLOYEE ROLE tableName, setColOne, value, primaryId
+//    let updateEmployeeRole = () => {
+//      connection.query("UPDATE ?? SET ??=? WHERE ??=?", ['employee', 'role_id', '5', 'id', '1'], function(err, res) {
+//          if (err) throw err;
+//          viewEmployee();
+//        }
+//      )
+//    };
+// updateEmployeeRole();
